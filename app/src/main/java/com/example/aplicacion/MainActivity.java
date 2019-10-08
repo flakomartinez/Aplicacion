@@ -1,17 +1,25 @@
 package com.example.aplicacion;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -19,38 +27,72 @@ public class MainActivity extends AppCompatActivity  {
 
 
     //Spinner Tipo;
-    EditText Cedula;
-    EditText Nombre;
-    EditText Apellido1;
-    EditText Apellido2;
-    EditText Telefono;
-    EditText Area;
-    Button BtRegistrar;
+    private EditText txtCedula;
+    private EditText txtNombre;
+    private EditText txtApellido1;
+    private EditText txtApellido2;
+    private EditText txtTelefono;
+    private EditText txtArea;
+    private EditText txtMail;
+    private EditText txtPass;
+    private ProgressDialog progreso;
+    private FirebaseAuth autenticacion;
+    private Button BtRegistrar;
+    private String cedula,nombre,apellido1,apellido2,telefono,area,email,pass;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        bdApp= FirebaseDatabase.getInstance().getReference("Usuario");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        autenticacion = FirebaseAuth.getInstance();
+        bdApp= FirebaseDatabase.getInstance().getReference();
+
         //Tipo=(Spinner) findViewById(R.id.tipo);
-        Cedula=(EditText) findViewById(R.id.cedula);
-        Nombre=(EditText) findViewById(R.id.nombre);
-        Apellido1=(EditText) findViewById(R.id.apellido1);
-        Apellido2=(EditText) findViewById(R.id.apellido2);
-        Telefono=(EditText) findViewById(R.id.telefono);
-        Area=(EditText) findViewById(R.id.area);
+        txtMail = (EditText) findViewById(R.id.mail);
+        txtPass =(EditText) findViewById(R.id.pass);
+        txtCedula =(EditText) findViewById(R.id.cedula);
+        txtNombre =(EditText) findViewById(R.id.nombre);
+        txtApellido1 =(EditText) findViewById(R.id.apellido1);
+        txtApellido2 =(EditText) findViewById(R.id.apellido2);
+        txtTelefono =(EditText) findViewById(R.id.telefono);
+        txtArea =(EditText) findViewById(R.id.area);
         BtRegistrar=(Button) findViewById(R.id.btregistrar);
 
+
+
+        progreso = new ProgressDialog(this);
         BtRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cedula= txtCedula.getText().toString().trim();
+                nombre= txtNombre.getText().toString().trim();
+                apellido1= txtApellido1.getText().toString().trim();
+                apellido2= txtApellido2.getText().toString().trim();
+                telefono= txtTelefono.getText().toString().trim();
+                area= txtArea.getText().toString().trim();
+                email=txtMail.getText().toString().trim();
+                pass=txtPass.getText().toString().trim();
 
+                if(!nombre.isEmpty()&& !email.isEmpty() && !pass.isEmpty()){
 
-                registrarUsuario();
+                    if(pass.length() >6){
+                        registrarUsuario();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this,"Contraseña minimo 6 caracteres", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+                else {
+                    Toast.makeText(MainActivity.this,"Debe completar los campos ", Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+
 
     }
 
@@ -60,28 +102,67 @@ public class MainActivity extends AppCompatActivity  {
     public void registrarUsuario(){
 
         //String tipos=Tipo.getSelectedItem().toString();
-        String cedu=Cedula.getText().toString();
-        String nom=Nombre.getText().toString();
-        String apell1=Apellido1.getText().toString();
-        String apell2=Apellido2.getText().toString();
-        String tel=Telefono.getText().toString();
-        String are=Area.getText().toString();
+        final String cedu= txtCedula.getText().toString();
+        final String nom= txtNombre.getText().toString();
+        final String apell1= txtApellido1.getText().toString();
+        final String apell2= txtApellido2.getText().toString();
+        final String tel= txtTelefono.getText().toString();
+        final String are= txtArea.getText().toString();
+        final String email=txtMail.getText().toString().trim();
+        final String pass=txtPass.getText().toString().trim();
 
-
-        if(!TextUtils.isEmpty(cedu)){
-
-            String id =bdApp.push().getKey();
-            Usuario usuarios = new Usuario(id, cedu, nom, apell1, apell2, tel, are);
-            Toast.makeText( this, "Usuario registrado", Toast.LENGTH_LONG).show();
-        }else{
-
-            Toast.makeText( this, "Debe introducir cedula", Toast.LENGTH_LONG).show();
-
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(this,"se debe ingresar info", Toast.LENGTH_LONG).show();
+            return;
         }
+        if(TextUtils.isEmpty(pass)){
+            Toast.makeText(this,"se debe ingresar info", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        progreso.setMessage("Realizando registro");
+        progreso.show();
+
+        autenticacion.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+
+                    Map<String, Object> informacion = new HashMap<>();
+
+                    informacion.put("nombre", nom);
+                    informacion.put("cedula", cedu);
+                    informacion.put("apellido1", apell1);
+                    informacion.put("apellido2", apell2);
+                    informacion.put("telefono", tel);
+                    informacion.put("area", are);
+                    informacion.put("correo",email);
+                    informacion.put("password",pass);
+
+                    String id=autenticacion.getCurrentUser().getUid();
+                    bdApp.child("Usuarios").child(id).setValue(informacion).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task1) {
+                            if(task1.isSuccessful()){
+                                Toast.makeText(MainActivity.this,"Logueado y guardado en realtime", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this,"No se pudieron crear lo datos en la bd", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    Toast.makeText(MainActivity.this,"Registrado correctamente", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"No se pudo registrar", Toast.LENGTH_LONG).show();
+                }
+                progreso.dismiss();
+            }
+        });
+
 
     }
 
-
 }
-
 

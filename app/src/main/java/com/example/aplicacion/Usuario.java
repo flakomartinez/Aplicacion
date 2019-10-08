@@ -1,9 +1,9 @@
 package com.example.aplicacion;
 
 public class Usuario {
-    String claseid, cedula, nombre, apellido1, apellido2, telefono, area;
+    String claseid, cedula, nombre, apellido1, apellido2, telefono, area, mail , pass;
 
-    public Usuario(String claseid, String cedula, String nombre, String apellido1, String apellido2, String telefono, String area) {
+    public Usuario(String claseid, String cedula, String nombre, String apellido1, String apellido2, String telefono, String area, String mail, String pass) {
         this.claseid = claseid;
         //this.tipo = tipo;
         this.cedula = cedula;
@@ -12,6 +12,9 @@ public class Usuario {
         this.apellido2 = apellido2;
         this.telefono = telefono;
         this.area = area;
+        this.mail = mail;
+        this.pass = pass;
+
     }
 
     public String getClaseid() {
@@ -76,5 +79,21 @@ public class Usuario {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }
