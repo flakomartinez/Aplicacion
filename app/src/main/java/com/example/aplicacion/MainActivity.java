@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity  {
         bdApp= FirebaseDatabase.getInstance().getReference();
 
         //Tipo=(Spinner) findViewById(R.id.tipo);
-        txtMail = (EditText) findViewById(R.id.mail);
-        txtPass =(EditText) findViewById(R.id.pass);
-        txtCedula =(EditText) findViewById(R.id.cedula);
-        txtNombre =(EditText) findViewById(R.id.nombre);
-        txtApellido1 =(EditText) findViewById(R.id.apellido1);
-        txtApellido2 =(EditText) findViewById(R.id.apellido2);
-        txtTelefono =(EditText) findViewById(R.id.telefono);
-        txtArea =(EditText) findViewById(R.id.area);
+        txtMail = (EditText) findViewById(R.id.campoMail);
+        txtPass =(EditText) findViewById(R.id.campoPass);
+        txtCedula =(EditText) findViewById(R.id.campoCedula);
+        txtNombre =(EditText) findViewById(R.id.campoNombre);
+        txtApellido1 =(EditText) findViewById(R.id.campoApellido1);
+        txtApellido2 =(EditText) findViewById(R.id.campoApellido2);
+        txtTelefono =(EditText) findViewById(R.id.campoTelefono);
+        txtArea =(EditText) findViewById(R.id.campoArea);
         BtRegistrar=(Button) findViewById(R.id.btregistrar);
 
 
@@ -67,16 +67,18 @@ public class MainActivity extends AppCompatActivity  {
         BtRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cedula= txtCedula.getText().toString().trim();
-                nombre= txtNombre.getText().toString().trim();
-                apellido1= txtApellido1.getText().toString().trim();
-                apellido2= txtApellido2.getText().toString().trim();
-                telefono= txtTelefono.getText().toString().trim();
-                area= txtArea.getText().toString().trim();
+                cedula=txtCedula.getText().toString().trim();
+                nombre=txtNombre.getText().toString().trim();
+                apellido1=txtApellido1.getText().toString().trim();
+                apellido2=txtApellido2.getText().toString().trim();
+                telefono=txtTelefono.getText().toString().trim();
+                area=txtArea.getText().toString().trim();
                 email=txtMail.getText().toString().trim();
                 pass=txtPass.getText().toString().trim();
 
-                if(!nombre.isEmpty()&& !email.isEmpty() && !pass.isEmpty()){
+
+
+                if(!nombre.isEmpty()&& !email.isEmpty() && !pass.isEmpty() && !cedula.isEmpty() && !apellido1.isEmpty() && !apellido2.isEmpty() && !telefono.isEmpty() && !area.isEmpty()){
 
                     if(pass.length() >6){
                         registrarUsuario();
@@ -102,12 +104,12 @@ public class MainActivity extends AppCompatActivity  {
     public void registrarUsuario(){
 
         //String tipos=Tipo.getSelectedItem().toString();
-        final String cedu= txtCedula.getText().toString();
-        final String nom= txtNombre.getText().toString();
-        final String apell1= txtApellido1.getText().toString();
-        final String apell2= txtApellido2.getText().toString();
-        final String tel= txtTelefono.getText().toString();
-        final String are= txtArea.getText().toString();
+        final String cedula= txtCedula.getText().toString();
+        final String nombre= txtNombre.getText().toString();
+        final String apellido1= txtApellido1.getText().toString();
+        final String apellido2= txtApellido2.getText().toString();
+        final String telefono= txtTelefono.getText().toString();
+        final String area= txtArea.getText().toString();
         final String email=txtMail.getText().toString().trim();
         final String pass=txtPass.getText().toString().trim();
 
@@ -130,12 +132,12 @@ public class MainActivity extends AppCompatActivity  {
 
                     Map<String, Object> informacion = new HashMap<>();
 
-                    informacion.put("nombre", nom);
-                    informacion.put("cedula", cedu);
-                    informacion.put("apellido1", apell1);
-                    informacion.put("apellido2", apell2);
-                    informacion.put("telefono", tel);
-                    informacion.put("area", are);
+                    informacion.put("nombre", nombre);
+                    informacion.put("cedula", cedula);
+                    informacion.put("apellido1", apellido1);
+                    informacion.put("apellido2", apellido2);
+                    informacion.put("telefono", telefono);
+                    informacion.put("area", area);
                     informacion.put("correo",email);
                     informacion.put("password",pass);
 
