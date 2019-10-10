@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">TransportAPP</string>
+    <string name="title_activity_login">Iniciar Sesión</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Iniciar Sesión</string>
+    <string name="action_sign_in_short">Iniciar Sesión</string>
+    <string name="welcome">"BIENVENIDO !"</string>
+    <string name="invalid_username">Usuario no válido</string>
+    <string name="invalid_password">Password debe ser >6 caracteres</string>
+    <string name="login_failed">"Login fallido"</string>
 
 </resources>
