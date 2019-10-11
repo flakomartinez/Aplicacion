@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,8 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -75,16 +79,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                  /*  bdApp.child("Usuarios").addValueEventListener(new ValueEventListener() {
+                   /* bdApp.child("Usuarios").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for(final DataSnapshot datos : dataSnapshot.getChildren()){
                                 bdApp.child("Usuarios").child(datos.getKey()).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        datosObtenidosLogin datosObtenidosLogin = datos.getValue(com.example.aplicacion.datosObtenidosLogin.class);
-                                        String correo= datosObtenidosLogin.getCorreo();
-                                        String rol1= datosObtenidosLogin.getRol();
+                                        datosObtenidosLogin dato = datos.getValue(com.example.aplicacion.datosObtenidosLogin.class);
+                                        String correo= dato.getCorreo();
+                                        String rol1= dato.getRol();
+                                        Log.e("rol: ",""+rol1);
+                                        Log.e("correo: ",""+correo);
                                         if(correo.equalsIgnoreCase(user)){
                                             rol=rol1;
                                         }
@@ -103,22 +109,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                         }
                     });
-                    if(rol.equals("Admin")){*/
+                    Toast.makeText(Login.this,"Lo de rol"+rol, Toast.LENGTH_LONG).show();
+                    if(rol.equals("Admin")){
                     Toast.makeText(Login.this,"Logueado", Toast.LENGTH_LONG).show();
-                        Intent next = new Intent(getApplication(), Conductor.class);
-                        startActivity(next);
-/*
-                    }
-                    else {
-                        Intent next = new Intent(getApplication(), Conductor.class);
+                        Intent next = new Intent(getApplication(), MainActivity.class);
                         startActivity(next);
 
                     }
-
-                }*/
-
+                    else {*/
+                    Intent next = new Intent(getApplication(), Conductor.class);
+                    startActivity(next);
 
                 }
+            //}
+
                 else {
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Toast.makeText(Login.this, "El user ya existe", Toast.LENGTH_LONG).show();
