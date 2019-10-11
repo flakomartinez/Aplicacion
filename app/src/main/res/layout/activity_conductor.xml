@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Conductor">
 
     <TextView
-        android:id="@+id/info"
-        android:layout_width="259dp"
-        android:layout_height="129dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="228dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
-        android:layout_marginBottom="374dp"
-        android:text="BIENVENIDO ADMIN"
+        android:id="@+id/info2"
+        android:layout_width="269dp"
+        android:layout_height="130dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="284dp"
+        android:layout_marginBottom="317dp"
+        android:text="BIENVENIDO OTRO ROL"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

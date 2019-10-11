@@ -148,7 +148,7 @@ public class Registrar extends AppCompatActivity implements AdapterView.OnItemSe
                             }
                             else {
                                 if (task1.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    Toast.makeText(Registrar.this, "Usuario ya esta registrado", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Registrar.this, "username ya esta registrado", Toast.LENGTH_LONG).show();
                                 }
                                 else{
                                     Toast.makeText(Registrar.this, "No se pudo registrar en la bd", Toast.LENGTH_LONG).show();
