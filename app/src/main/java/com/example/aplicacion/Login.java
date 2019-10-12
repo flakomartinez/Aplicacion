@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText email;
     private EditText password;
     private Button login;
-    private ProgressDialog progreso;
+//    private ProgressDialog progreso;
 
 
     @Override
@@ -45,6 +45,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         autenticacion = FirebaseAuth.getInstance();
         bdApp= FirebaseDatabase.getInstance().getReference();
 
+
         email = (EditText) findViewById(R.id.txtmail);
         password = (EditText) findViewById(R.id.txtpass);
         login = (Button) findViewById(R.id.btnlogin);
@@ -52,7 +53,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         //user = email.getText().toString().trim();
         //pass = password.getText().toString().trim();
 
-        progreso = new ProgressDialog(this);
+  //      progreso = new ProgressDialog(this);
         login.setOnClickListener(this);
 
     }
@@ -72,64 +73,44 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        progreso.setMessage("Realizando verificación");
-        progreso.show();
+    //    progreso.setMessage("Realizando verificación");
+      //  progreso.show();
 
         autenticacion.signInWithEmailAndPassword(user, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                   /* bdApp.child("Usuarios").addValueEventListener(new ValueEventListener() {
+                    bdApp.child("Usuarios").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for(final DataSnapshot datos : dataSnapshot.getChildren()){
-                                bdApp.child("Usuarios").child(datos.getKey()).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        datosObtenidosLogin dato = datos.getValue(com.example.aplicacion.datosObtenidosLogin.class);
-                                        String correo= dato.getCorreo();
-                                        String rol1= dato.getRol();
-                                        Log.e("rol: ",""+rol1);
-                                        Log.e("correo: ",""+correo);
-                                        if(correo.equalsIgnoreCase(user)){
-                                            rol=rol1;
-                                        }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                            for(DataSnapshot info : dataSnapshot.getChildren()){
+                                datosObtenidosLogin data = info.getValue(datosObtenidosLogin.class);
+                                String correoMail = data.getCorreo();
+                                String roles = data.getRol();
 
-                                    }
-                                });
+                                if(correoMail== user){
+                                    Intent next = new Intent(getApplication(), MainActivity.class);
+                                    startActivity(next);
+                                }
+                                else{
+                                    Intent next = new Intent(getApplication(), Conductor.class);
+                                    startActivity(next);
+                                }
+
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
-                    Toast.makeText(Login.this,"Lo de rol"+rol, Toast.LENGTH_LONG).show();
-                    if(rol.equals("Admin")){
-                    Toast.makeText(Login.this,"Logueado", Toast.LENGTH_LONG).show();
-                        Intent next = new Intent(getApplication(), MainActivity.class);
-                        startActivity(next);
-
-                    }
-                    else {*/
-                    Intent next = new Intent(getApplication(), Conductor.class);
-                    startActivity(next);
-
-                }
-            //}
+            }
 
                 else {
-                    if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                        Toast.makeText(Login.this, "El user ya existe", Toast.LENGTH_LONG).show();
 
-                    } else {
                         Toast.makeText(Login.this, "no se pudo loguear", Toast.LENGTH_LONG).show();
-                    }
+
                 }
 
 
@@ -141,6 +122,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         loguearUsuario();
     }
 }
