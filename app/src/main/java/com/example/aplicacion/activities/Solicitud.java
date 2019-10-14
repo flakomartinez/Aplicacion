@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class Solicitud extends AppCompatActivity {
         txtHoraSalida = (EditText) findViewById(R.id.campoHoraSalida);
         txtHoraLLegada = (EditText) findViewById(R.id.campoHoraLlegada);
         txtNoPasajeros = (EditText) findViewById(R.id.campoNoPasajeros);
+        autenticacion = FirebaseAuth.getInstance();
+        bdApp= FirebaseDatabase.getInstance().getReference();
 
         btnSolicitar = (Button) findViewById(R.id.btnSolicitar);
 
@@ -52,6 +55,7 @@ public class Solicitud extends AppCompatActivity {
 
 
         btnSolicitar.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 origen=txtOrigen.getText().toString().trim();
@@ -60,6 +64,7 @@ public class Solicitud extends AppCompatActivity {
                 horaSalida=txtHoraSalida.getText().toString().trim();
                 horaLlegada=txtHoraLLegada.getText().toString().trim();
                 noPasajeros=txtNoPasajeros.getText().toString().trim();
+
 
 
 
@@ -81,42 +86,46 @@ public class Solicitud extends AppCompatActivity {
 
 
 
-    public void realizarSolicitud(){
+    public void realizarSolicitud() {
 
 
-        final String origen= txtOrigen.getText().toString();
-        final String destino= txtDestino.getText().toString();
-        final String fechaSalida= txtFechaSalida.getText().toString();
-        final String horaSalida= txtHoraSalida.getText().toString();
-        final String horaLlegada= txtHoraLLegada.getText().toString();
-        final String noPasajeros= txtNoPasajeros.getText().toString();
+        final String origen = txtOrigen.getText().toString();
+        final String destino = txtDestino.getText().toString();
+        final String fechaSalida = txtFechaSalida.getText().toString();
+        final String horaSalida = txtHoraSalida.getText().toString();
+        final String horaLlegada = txtHoraLLegada.getText().toString();
+        final String noPasajeros = txtNoPasajeros.getText().toString();
+        final String estado="abierta";
 
 
-                    Map<String, Object> informacion = new HashMap<>();
+        Map<String, Object> informacion = new HashMap<>();
 
-                    informacion.put("origen", origen);
-                    informacion.put("destino", destino);
-                    informacion.put("fechaSalida", fechaSalida);
-                    informacion.put("horaSalida", horaSalida);
-                    informacion.put("HoraLlegada", horaLlegada);
-                    informacion.put("noPasajeros", noPasajeros);
+        informacion.put("origen", origen);
+        informacion.put("destino", destino);
+        informacion.put("fechaSalida", fechaSalida);
+        informacion.put("horaSalida", horaSalida);
+        informacion.put("HoraLlegada", horaLlegada);
+        informacion.put("noPasajeros", noPasajeros);
+        informacion.put("estado", estado);
 
 
-                    String id=autenticacion.getCurrentUser().getUid();
-                    bdApp.child("Solicitud").child(id).setValue(informacion).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task1) {
-                            if(task1.isSuccessful()){
-                                Toast.makeText(Solicitud.this,"Logueado y guardado en realtime", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                            else {
-                                Toast.makeText(Solicitud.this,"No se pudieron crear lo datos en la bd", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                    Toast.makeText(Solicitud.this,"Registrado correctamente", Toast.LENGTH_LONG).show();
+        String id = autenticacion.getCurrentUser().getUid();
+        bdApp.child("Solicitud").child(id).setValue(informacion).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(Solicitud.this, "Guardado Solicitud", Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+
+                    Toast.makeText(Solicitud.this, "No se pudo registrar en la bd", Toast.LENGTH_LONG).show();
                 }
-
-                //progreso.dismiss();
             }
+        });
+        Toast.makeText(Solicitud.this, "Registrado correctamente", Toast.LENGTH_LONG).show();
+
+
+    }
+}
