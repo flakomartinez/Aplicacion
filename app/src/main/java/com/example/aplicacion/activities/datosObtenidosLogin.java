@@ -1,4 +1,4 @@
-package com.example.aplicacion;
+package com.example.aplicacion.activities;
 
 public class datosObtenidosLogin {
 
