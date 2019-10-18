@@ -1,10 +1,8 @@
-package com.example.aplicacion.activities;
-
-import android.os.Bundle;
+package com.example.aplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.aplicacion.R;
+import android.os.Bundle;
 
 public class AgendaSolicitud extends AppCompatActivity {
 
