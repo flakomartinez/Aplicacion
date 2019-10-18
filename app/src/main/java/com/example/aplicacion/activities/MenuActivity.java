@@ -31,7 +31,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+        //set
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +79,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             Intent intento = new Intent(MenuActivity.this,Registrar.class);
             startActivity(intento);
         }
-        else if(id == R.id.registrar_vehiculo) {
+        else if(id == R.id.ver_agenda) {
             Intent intento = new Intent(MenuActivity.this, Solicitud.class);
             startActivity(intento);
         }
+        /*else if(id == R.id.actualizar_datos){
+
+        }
+        else if(id == R.id.eliminar_datos){
+
+        }
+        else if(id == R.id.cerrarSesion){
+
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
