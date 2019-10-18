@@ -11,6 +11,13 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".activities.Login">
+
+
+        </activity>
+        <activity android:name=".activities.Registrar"></activity>
+        <activity android:name=".activities.Conductor"></activity>
+        <activity android:name=".activities.Solicitud"></activity>
+        <activity android:name=".activities.AgendaSolicitud">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,9 +25,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activities.Registrar"></activity>
-        <activity android:name=".activities.Conductor"></activity>
-        <activity android:name=".activities.Solicitud"></activity>
     </application>
 
 </manifest>

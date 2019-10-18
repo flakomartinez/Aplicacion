@@ -51,9 +51,6 @@ public class Solicitud extends AppCompatActivity {
         btnSolicitar = (Button) findViewById(R.id.btnSolicitar);
 
 
-
-
-
         btnSolicitar.setOnClickListener(new View.OnClickListener() {
 
             @Override
